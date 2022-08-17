@@ -1,5 +1,8 @@
-const express = require('express')
-const app = express()
+const express = require('express');
+const bodyParser = require('body-parser');
+const app = express();
+
+app.use(bodyParser.json());
 
 app.get("/",  (req, res) => {
     res.send("Hello, World!");
@@ -12,6 +15,7 @@ app.get("/oi",  (req, res) => {
 /*
 Lista de EndPoints da aplicação CRUD de Mensagens.
 CRUD: create; Read (single & all); Update; Delete;
+- [GET] /Mensagens - Retorna a lista de mensagens.
 - [GET] /Mensagens/{id} - Retorna apenas uma unica mensagens pelo id.
 - [POST] /Mensagens - Cria  uma nova mensagem.
 - [PUT] /Mensagens/{id} - Atualiza uma Mensagem pelo ID.
@@ -26,16 +30,32 @@ const Mensagens = [
     "Essa é a quinta Mensagem"
 ];
 
+//[GET] /Mensagens - Retorna a lista de mensagens.
 app.get('/Mensagens', (req, res) => {
     res.send(Mensagens);
 })
 
+//[GET] /Mensagens/{id} - Retorna apenas uma unica mensagens pelo id.
 app.get('/Mensagens/:id', (req, res) => {
     const id = req.params.id -1;
     const mensagem = Mensagens [id];
     res.send(mensagem);
 })
 
+//[POST] /Mensagens - Cria  uma nova mensagem.
+app.post('/Mensagens', (req, res) => {
+    const mensagem = req.body.mensagem;
+    Mensagens.push(mensagem);
+    res.send(`Mensagem criada com sucesso: '${mensagem}'.`);
+})
+
+//[PUT] /Mensagens/{id} - Atualiza uma Mensagem pelo ID.
+app.put('/Mensagens/:id', (req, res) => {
+    const id = req.params.id -1;
+    const mensagem = req.body.mensagem;
+    Mensagens [id] = mensagem;
+    res.send(`Mensagem atualizada com sucesso: '${mensagem}'`);
+})
 app.listen(3000, function() {
     console.info('App rodando em http://localhost:3000')
 });
