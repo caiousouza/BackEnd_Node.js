@@ -32,7 +32,7 @@ const Mensagens = [
 
 //[GET] /Mensagens - Retorna a lista de mensagens.
 app.get('/Mensagens', (req, res) => {
-    res.send(Mensagens);
+    res.send(Mensagens.filter(Boolean));
 })
 
 //[GET] /Mensagens/{id} - Retorna apenas uma unica mensagens pelo id.
@@ -56,6 +56,14 @@ app.put('/Mensagens/:id', (req, res) => {
     Mensagens [id] = mensagem;
     res.send(`Mensagem atualizada com sucesso: '${mensagem}'`);
 })
+
+//[DELETE] /Mensagens/{id} - Remove uma mensagem pelo ID.
+app.delete('/Mensagens/:id', (req, res) => {
+    const id = req.params.id -1;
+    delete Mensagens [id];
+    res.send('Mensagem removida com sucesso!!'); 
+})
+
 app.listen(3000, function() {
     console.info('App rodando em http://localhost:3000')
 });
